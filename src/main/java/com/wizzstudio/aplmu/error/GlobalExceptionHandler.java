@@ -15,4 +15,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> exceptionHandler(HttpServletRequest request, CustomException exception) throws Exception {
         return new ResponseEntity<>(exception.getMessage(), exception.getHttpStatus());
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public ResponseEntity<String> exceptionHandler(HttpServletRequest request, Exception exception) throws Exception {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

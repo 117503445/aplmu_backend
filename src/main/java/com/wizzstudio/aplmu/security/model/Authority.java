@@ -1,5 +1,7 @@
 package com.wizzstudio.aplmu.security.model;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;

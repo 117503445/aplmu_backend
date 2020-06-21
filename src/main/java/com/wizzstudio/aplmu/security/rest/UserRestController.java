@@ -12,7 +12,7 @@ import com.wizzstudio.aplmu.security.service.UserService;
 
 @RestController
 @RequestMapping("/api")
-@Api(tags = {"用户信息"})
+@Api(tags = {"单个用户信息"})
 public class UserRestController {
 
     private final UserService userService;
@@ -23,9 +23,8 @@ public class UserRestController {
 
     @Secured("ROLE_USER")
     @GetMapping("/user")
-
     public ResponseEntity<User> getActualUser() {
-        var a = userService.getUserWithAuthorities();
-        return a.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>((User) null, HttpStatus.NOT_FOUND));
+        var auth = userService.getUserWithAuthorities();
+        return auth.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>((User) null, HttpStatus.NOT_FOUND));
     }
 }

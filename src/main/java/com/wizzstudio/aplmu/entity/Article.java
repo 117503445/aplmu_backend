@@ -1,27 +1,28 @@
 package com.wizzstudio.aplmu.entity;
 
+import com.wizzstudio.aplmu.security.model.User;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Feedback {
+public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String type;//问题类型
-    private String content;//问题内容
-    private String contactInfo;//联系方式
+    private String title;
+    private String content;
+    private String author;
 
-
-    public String getType() {
-        return type;
+    public String getTitle() {
+        return title;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -32,11 +33,11 @@ public class Feedback {
         this.content = content;
     }
 
-    public String getContactInfo() {
-        return contactInfo;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

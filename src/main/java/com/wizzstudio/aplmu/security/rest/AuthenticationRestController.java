@@ -1,6 +1,7 @@
 package com.wizzstudio.aplmu.security.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.wizzstudio.aplmu.error.CustomException;
 import com.wizzstudio.aplmu.security.model.Authority;
 import com.wizzstudio.aplmu.security.model.User;
 import com.wizzstudio.aplmu.security.repository.UserRepository;
@@ -16,6 +17,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +29,7 @@ import com.wizzstudio.aplmu.security.jwt.JWTFilter;
 import com.wizzstudio.aplmu.security.jwt.TokenProvider;
 
 import javax.validation.Valid;
+import java.awt.desktop.SystemEventListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -67,7 +72,17 @@ public class AuthenticationRestController {
 
     @ApiOperation(value = "注册")
     @PostMapping("/register")
-    public ResponseEntity<User> register(@Valid @RequestBody RegisterDto registerDto) {
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterDto registerDto, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                System.out.println(fieldError.getDefaultMessage());
+                throw new CustomException(HttpStatus.BAD_REQUEST, fieldError.getDefaultMessage());
+            }
+        }
+
+        if (userRepository.findOneByUsername(registerDto.getUsername()).isPresent()) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "UserName has existed!");
+        }
 
         User u = new User();
 
@@ -84,7 +99,9 @@ public class AuthenticationRestController {
         //u.setId(4L);
         u.setActivated(true);
 
-        u.setPassword(new BCryptPasswordEncoder().encode(registerDto.getPassword()));
+        u.setPassword(new
+                BCryptPasswordEncoder().
+                encode(registerDto.getPassword()));
 
         userRepository.save(u);
         //var u1 = userRepository.findById(3L).get();

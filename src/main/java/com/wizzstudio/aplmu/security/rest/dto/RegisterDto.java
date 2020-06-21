@@ -5,20 +5,19 @@ import javax.validation.constraints.Size;
 
 public class RegisterDto {
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 4, max = 50, message = "the size of UserName should between [4,50]. Error valid RegisterLoginDto.")
     private String username;
-
     @NotNull
-    @Size(min = 4, max = 100)
+    @Size(min = 4, max = 50, message = "the size of password should between [4,50]. Error valid From RegisterLoginDto.")
     private String password;
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 1, max = 50, message = "the size of firstname should between [1,50]. Error valid From RegisterLoginDto.")
     private String firstname;
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 1, max = 50, message = "the size of lastname should between [1,50]. Error valid From RegisterLoginDto.")
     private String lastname;
     @NotNull
-    @Size(min = 4, max = 50)
+    @Size(min = 1, max = 50, message = "the size of email should between [1,50]. Error valid From RegisterLoginDto.")
     private String email;
 
     public String getUsername() {

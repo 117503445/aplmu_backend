@@ -9,11 +9,11 @@ import javax.validation.constraints.Size;
 public class LoginDto {
 
    @NotNull
-   @Size(min = 1, max = 50)
+   @Size(min = 4, max = 50, message = "the size of UserName should between [4,50]. Error valid From LoginDto.")
    private String username;
 
    @NotNull
-   @Size(min = 4, max = 100)
+   @Size(min = 4, max = 50, message = "the size of password should between [4,50]. Error valid From LoginDto.")
    private String password;
 
    private Boolean rememberMe;

@@ -22,7 +22,7 @@ public class WebLogAspect {
     /**
      * 以 controller 包下定义的所有请求为切入点
      */
-    @Pointcut("execution(public * com.wizzstudio.aplmu.repository..*.*(..))")
+    @Pointcut("execution(public * com.wizzstudio.aplmu.repository..*.*(..)) || execution(public * com.wizzstudio.aplmu.security.repository..*.*(..))")
     public void webLog() {
     }
 
@@ -36,6 +36,10 @@ public class WebLogAspect {
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         // 开始打印请求日志
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            logger.info("Logger : ServletRequestAttributes == null ");
+            return;
+        }
         HttpServletRequest request = attributes.getRequest();
 
         // 打印请求相关参数
@@ -59,9 +63,7 @@ public class WebLogAspect {
      */
     @After("webLog()")
     public void doAfter() throws Throwable {
-        logger.info("=========================================== End ===========================================");
-        // 每个请求之间空一行
-        logger.info("");
+
     }
 
     /**
@@ -79,6 +81,9 @@ public class WebLogAspect {
         logger.info("Response Args  : {}", new Gson().toJson(result));
         // 执行耗时
         logger.info("Time-Consuming : {} ms", System.currentTimeMillis() - startTime);
+        logger.info("=========================================== End ===========================================");
+        // 每个请求之间空一行
+        logger.info("");
         return result;
     }
 

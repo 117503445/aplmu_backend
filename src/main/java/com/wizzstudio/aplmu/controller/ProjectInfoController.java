@@ -27,6 +27,6 @@ public class ProjectInfoController {
     @GetMapping(path = "ver", produces = "application/json")
     public @ResponseBody
     String getAllRecords() {
-        return String.format("{\"version\":%s,\"buildTime\":%s}", version, buildTime);
+        return String.format("{\"version\":\"%s\",\"buildTime\":\"%s\"}", version, buildTime);
     }
 }

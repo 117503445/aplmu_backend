@@ -17,7 +17,7 @@ public class Article {
     private String title;
     private String content;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private String author;
+    private long authorID;
 
     @CreatedDate
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -42,14 +42,6 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     public long getCreatedTimeStamp() {
@@ -82,5 +74,13 @@ public class Article {
 
     public void setTitleImage(String titleImage) {
         this.titleImage = titleImage;
+    }
+
+    public long getAuthorID() {
+        return authorID;
+    }
+
+    public void setAuthorID(long authorID) {
+        this.authorID = authorID;
     }
 }

@@ -2,6 +2,7 @@ package com.wizzstudio.aplmu.controller;
 
 import com.wizzstudio.aplmu.entity.Article;
 import com.wizzstudio.aplmu.repository.ArticleRepository;
+import com.wizzstudio.aplmu.security.repository.UserRepository;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +18,11 @@ import java.util.Optional;
 @RequestMapping("/api/article")
 public class ArticleController {
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    public ArticleController(ArticleRepository articleRepository) {
+    public ArticleController(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
     @Secured("ROLE_USER")
@@ -28,7 +31,12 @@ public class ArticleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         assert authentication != null;
 
-        article.setAuthor(authentication.getName());
+        var oJwtUser = userRepository.findOneByUsername(authentication.getName());
+        assert oJwtUser.isPresent();
+
+        var jwtUser = oJwtUser.get();
+
+        article.setAuthorID(jwtUser.getId());
 
         return articleRepository.save(article);
     }

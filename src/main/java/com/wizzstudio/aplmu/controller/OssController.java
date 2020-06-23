@@ -7,10 +7,10 @@ import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
 import com.wizzstudio.aplmu.error.CustomException;
 import com.wizzstudio.aplmu.repository.ArticleRepository;
+import com.wizzstudio.aplmu.security.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -28,9 +28,8 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/api/oss")
 public class OssController {
-    @Autowired
-    private ArticleRepository articleRepository;
-
+    private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
     @Value("${alioss.accessId}")
     private String accessId;
     @Value("${alioss.accessKey}")
@@ -39,6 +38,11 @@ public class OssController {
     private String endpoint;
     @Value("${alioss.bucket}")
     private String bucket;
+
+    public OssController(ArticleRepository articleRepository, UserRepository userRepository) {
+        this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
+    }
 
     @ApiOperation("获取某个用户的上传凭证")
     @Secured("ROLE_USER")
@@ -64,7 +68,13 @@ public class OssController {
             throw new CustomException(HttpStatus.NOT_FOUND, "文章不存在");
         }
         //todo 管理员也可以进行修改
-        if (article.get().getAuthor().equals(authentication.getName())) {
+
+        var oJwtUser = userRepository.findOneByUsername(authentication.getName());
+        assert oJwtUser.isPresent();
+
+        var jwtUser = oJwtUser.get();
+
+        if (article.get().getAuthorID() == jwtUser.getId()) {
             throw new CustomException(HttpStatus.UNAUTHORIZED, "不可以编辑他人的文章");
         }
 

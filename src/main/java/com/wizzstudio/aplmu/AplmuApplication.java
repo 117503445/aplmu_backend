@@ -1,16 +1,13 @@
 package com.wizzstudio.aplmu;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.hateoas.client.LinkDiscoverer;
-import org.springframework.http.MediaType;
-import org.springframework.plugin.core.OrderAwarePluginRegistry;
-import org.springframework.plugin.core.PluginRegistry;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @EnableSwagger2WebMvc
 @SpringBootApplication
+@EnableJpaAuditing
 public class AplmuApplication {
 //    @Bean
 //    public ServletRegistrationBean servletRegistrationBean() {

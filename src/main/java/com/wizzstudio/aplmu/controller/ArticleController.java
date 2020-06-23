@@ -5,6 +5,9 @@ import com.wizzstudio.aplmu.repository.ArticleRepository;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -19,24 +22,33 @@ public class ArticleController {
         this.articleRepository = articleRepository;
     }
 
+    @Secured("ROLE_USER")
     @PostMapping()
-    public Article saveUser(@RequestBody Article article) {
+    public Article save(@RequestBody Article article) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        assert authentication != null;
+
+        article.setAuthor(authentication.getName());
+
         return articleRepository.save(article);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") int id) {
+    public void delete(@PathVariable("id") int id) {
+        //todo 只有管理员和编辑者可以进行删除
+
         articleRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
-    public Article updateUser(@PathVariable("id") int id, @RequestBody Article article) {
+    public Article update(@PathVariable("id") int id, @RequestBody Article article) {
+        //todo 只有管理员和编辑者可以进行更新
         article.setId(id);
         return articleRepository.save(article);
     }
 
     @GetMapping("/{id}")
-    public Article getUserInfo(@PathVariable("id") int id) {
+    public Article getUser(@PathVariable("id") int id) {
 
         Optional<Article> optional = articleRepository.findById(id);
 

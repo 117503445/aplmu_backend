@@ -1,5 +1,6 @@
 package com.wizzstudio.aplmu.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -10,14 +11,19 @@ import javax.persistence.*;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer id;
 
     private String title;
     private String content;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String author;
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
     @CreatedDate
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private long createdTimeStamp;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int pageView;
 
     public String getTitle() {
@@ -56,10 +62,6 @@ public class Article {
         return pageView;
     }
 
-    public void IncPageView() {
-        pageView++;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -67,4 +69,9 @@ public class Article {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public void IncPageView() {
+        pageView++;
+    }
+
 }

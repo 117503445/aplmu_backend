@@ -46,7 +46,7 @@ public class OssController {
         String host = "http://" + bucket + "." + endpoint; // host的格式为 bucketname.endpoint
         // callbackUrl为 上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实信息。
         String callbackUrl = "https://aplmu.backend.117503445.top/api/oss/callback";
-        String dir = String.format("user/%s", authentication.getName()); // 用户上传文件时指定的前缀。
+        String dir = String.format("user/%s/", authentication.getName()); // 用户上传文件时指定的前缀。
         OSSClient client = new OSSClient(endpoint, accessId, accessKey);
         long expireTime = 30;
         long expireEndTime = System.currentTimeMillis() + expireTime * 1000;

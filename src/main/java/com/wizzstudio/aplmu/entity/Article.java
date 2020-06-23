@@ -26,6 +26,8 @@ public class Article {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int pageView;
 
+    private String titleImage;
+
     public String getTitle() {
         return title;
     }
@@ -74,4 +76,11 @@ public class Article {
         pageView++;
     }
 
+    public String getTitleImage() {
+        return titleImage;
+    }
+
+    public void setTitleImage(String titleImage) {
+        this.titleImage = titleImage;
+    }
 }

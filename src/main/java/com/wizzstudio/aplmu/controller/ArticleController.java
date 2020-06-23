@@ -3,7 +3,6 @@ package com.wizzstudio.aplmu.controller;
 import com.wizzstudio.aplmu.entity.Article;
 import com.wizzstudio.aplmu.repository.ArticleRepository;
 import io.swagger.annotations.Api;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -21,27 +20,25 @@ public class ArticleController {
     }
 
     @PostMapping()
-    public Article saveUser(@RequestBody Article user) {
-        return articleRepository.save(user);
+    public Article saveUser(@RequestBody Article article) {
+        return articleRepository.save(article);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") int userId) {
-        articleRepository.deleteById(userId);
+    public void deleteUser(@PathVariable("id") int id) {
+        articleRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
-    public Article updateUser(@PathVariable("id") int userId, @RequestBody Article user) {
-        user.setId(userId);
-        return articleRepository.save(user);
+    public Article updateUser(@PathVariable("id") int id, @RequestBody Article article) {
+        article.setId(id);
+        return articleRepository.save(article);
     }
 
     @GetMapping("/{id}")
-    public Article getUserInfo(@PathVariable("id") int userId) {
+    public Article getUserInfo(@PathVariable("id") int id) {
 
-        LoggerFactory.getLogger(ArticleController.class).info("getUserInfo");
-
-        Optional<Article> optional = articleRepository.findById(userId);
+        Optional<Article> optional = articleRepository.findById(id);
 
         if (optional.isPresent()) {
             optional.get().IncPageView();

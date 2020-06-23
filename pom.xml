@@ -12,7 +12,7 @@
     </parent>
     <groupId>com.wizzstudio</groupId>
     <artifactId>aplmu</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.1-SNAPSHOT</version>
     <name>aplmu</name>
     <description>aplmu backend by Spring Boot</description>
 

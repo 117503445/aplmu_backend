@@ -86,8 +86,7 @@ public class OssController {
         return jsonObject.toString();
 
     }
-
-    @Secured("ROLE_USER")
+    
     @GetMapping(path = "callback", produces = "application/json")
     public void callback() {
         System.out.println("oss callback");

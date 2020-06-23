@@ -10,9 +10,9 @@ public class RegisterDto {
     @NotNull
     @Size(min = 4, max = 50, message = "the size of password should between [4,50]. Error valid From RegisterLoginDto.")
     private String password;
-    @NotNull
-    @Size(min = 1, max = 50, message = "the size of firstname should between [1,50]. Error valid From RegisterLoginDto.")
-    private String firstname;
+
+    private String avatar;//头像 url
+
     @NotNull
     @Size(min = 1, max = 50, message = "the size of lastname should between [1,50]. Error valid From RegisterLoginDto.")
     private String lastname;
@@ -36,13 +36,6 @@ public class RegisterDto {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
 
     public String getLastname() {
         return lastname;
@@ -58,5 +51,13 @@ public class RegisterDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

@@ -2,13 +2,15 @@ package com.wizzstudio.aplmu.security.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wizzstudio.aplmu.error.CustomException;
+import com.wizzstudio.aplmu.security.jwt.JWTFilter;
+import com.wizzstudio.aplmu.security.jwt.TokenProvider;
 import com.wizzstudio.aplmu.security.model.Authority;
 import com.wizzstudio.aplmu.security.model.User;
 import com.wizzstudio.aplmu.security.repository.UserRepository;
+import com.wizzstudio.aplmu.security.rest.dto.LoginDto;
 import com.wizzstudio.aplmu.security.rest.dto.RegisterDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,19 +21,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.wizzstudio.aplmu.security.rest.dto.LoginDto;
-import com.wizzstudio.aplmu.security.jwt.JWTFilter;
-import com.wizzstudio.aplmu.security.jwt.TokenProvider;
 
 import javax.validation.Valid;
-import java.awt.desktop.SystemEventListener;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Controller to authenticate users.
@@ -93,7 +89,7 @@ public class AuthenticationRestController {
         u.setAuthorities(h);
 
         u.setUsername(registerDto.getUsername());
-        u.setFirstname(registerDto.getFirstname());
+        u.setAvatar(registerDto.getAvatar());
         u.setLastname(registerDto.getLastname());
         u.setEmail(registerDto.getEmail());
         //u.setId(4L);

@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "USER")
 public class User {
-//todo 增加头像url
+    //todo 增加头像url
     @JsonIgnore
     @Id
     @Column(name = "ID")
@@ -32,10 +32,8 @@ public class User {
     @Size(min = 4, max = 200, message = "the size of password should between [4,200]. Error valid From User Model.")
     private String password;
 
-    @Column(name = "FIRSTNAME", length = 50)
-    @NotNull
-    @Size(min = 1, max = 50, message = "the size of firstname should between [1,50]. Error valid From User Model.")
-    private String firstname;
+
+    private String avatar;//头像 url
 
     @Column(name = "LASTNAME", length = 50)
     @NotNull
@@ -82,14 +80,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
     }
 
     public String getLastname() {
@@ -142,10 +132,18 @@ public class User {
         return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", firstname='" + firstname + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", activated=" + activated +
                 '}';
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

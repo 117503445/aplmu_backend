@@ -1,5 +1,6 @@
 package com.wizzstudio.aplmu.util;
 
+import com.wizzstudio.aplmu.security.model.User;
 import com.wizzstudio.aplmu.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -55,5 +56,35 @@ public class SecurityUtil {
         }
         String name = oName.get();
         return FromUserNameGetId(name);
+    }
+
+    public static Optional<User> getCurrentUser() {
+        var oUserId = getCurrentUserId();
+        if (oUserId.isEmpty()) {
+            return Optional.empty();
+        }
+        return userRepository.findById(oUserId.get());
+    }
+
+    //检查当前用户是否有 roleName 权限
+    public static boolean hasRoleName(String roleName) {
+
+        var oUser = getCurrentUser();
+        if (oUser.isEmpty()) {
+            return false;
+        }
+        var user = oUser.get();
+
+        for (var authority : user.getAuthorities()) {
+            if (authority.getName().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //检查当前用户是否有 Admin 权限
+    public static boolean isAdmin() {
+        return hasRoleName("ROLE_ADMIN");
     }
 }

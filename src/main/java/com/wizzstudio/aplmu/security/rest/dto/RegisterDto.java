@@ -1,5 +1,7 @@
 package com.wizzstudio.aplmu.security.rest.dto;
 
+import com.wizzstudio.aplmu.security.model.User;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -59,5 +61,13 @@ public class RegisterDto {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public static void toUser(RegisterDto dto, User user) {
+        user.setAvatar(dto.getAvatar());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setLastname(dto.getLastname());
+        user.setUsername(dto.getUsername());
     }
 }

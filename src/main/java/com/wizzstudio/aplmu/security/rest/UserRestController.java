@@ -1,30 +1,87 @@
 package com.wizzstudio.aplmu.security.rest;
 
-import io.swagger.annotations.Api;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.wizzstudio.aplmu.error.CustomException;
 import com.wizzstudio.aplmu.security.model.User;
-import com.wizzstudio.aplmu.security.service.UserService;
+import com.wizzstudio.aplmu.security.repository.UserRepository;
+import com.wizzstudio.aplmu.security.rest.dto.RegisterDto;
+import com.wizzstudio.aplmu.util.SecurityUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
-@Api(tags = {"单个用户信息"})
+@RequestMapping("/api/user")
+@Api(tags = {"用户"})
 public class UserRestController {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserRestController(UserService userService) {
-        this.userService = userService;
+    public UserRestController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
+    @ApiOperation("根据 id 查看信息")
+    @GetMapping("/{id}")
+    @Secured("ROLE_ADMIN")
+    public Optional<User> getOne(@PathVariable("id") long id) {
+        return userRepository.findById(id);
+    }
+
+    @ApiOperation("查看自己的信息")
+    @GetMapping("/me")
     @Secured("ROLE_USER")
-    @GetMapping("/user")
-    public ResponseEntity<User> getActualUser() {
-        var auth = userService.getUserWithAuthorities();
-        return auth.map(ResponseEntity::ok).orElseGet(() -> new ResponseEntity<>((User) null, HttpStatus.NOT_FOUND));
+    public Optional<User> getMe() {
+        var oUserId = SecurityUtil.getCurrentUserId();
+        assert oUserId.isPresent();
+
+        return userRepository.findById(oUserId.get());
+    }
+
+    @ApiOperation("查看所有用户信息")
+    @GetMapping()
+    @Secured("ROLE_USER")
+    public Page<User> pageQuery(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+
+        return userRepository.findAll(PageRequest.of(pageNum - 1, pageSize));
+    }
+
+    @ApiOperation("删除某个非管理员用户")
+    @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
+    public void delete(@PathVariable("id") long id) throws CustomException {
+        if (SecurityUtil.isAdmin()) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "无法删除管理员账户");
+        }
+
+        userRepository.deleteById(id);
+    }
+
+    @ApiOperation("更新某个用户信息")
+    @PutMapping("/{id}")
+    @Secured("ROLE_USER")
+    public User update(@PathVariable("id") long id, @RequestBody RegisterDto registerDto) throws CustomException {
+        var oCurrentUserId = SecurityUtil.getCurrentUserId();
+        assert oCurrentUserId.isPresent();
+
+        if (!SecurityUtil.isAdmin() && oCurrentUserId.get() != id) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "无法更新他人的账户信息,除非你有管理员权限");
+        }
+
+        var oUser = userRepository.findById(id);
+        if (oUser.isEmpty()) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "未找到要删除的用户");
+        }
+        var user = oUser.get();
+
+        RegisterDto.toUser(registerDto, user);
+
+        return userRepository.save(user);
     }
 }

@@ -1,11 +1,14 @@
 package com.wizzstudio.aplmu.controller;
 
+import com.wizzstudio.aplmu.dto.ArticleGetDto;
 import com.wizzstudio.aplmu.entity.Article;
+import com.wizzstudio.aplmu.error.CustomException;
 import com.wizzstudio.aplmu.repository.ArticleRepository;
 import com.wizzstudio.aplmu.security.repository.UserRepository;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,21 +59,26 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public Article getUser(@PathVariable("id") int id) {
+    public ArticleGetDto get(@PathVariable("id") int id) throws CustomException {
 
         Optional<Article> optional = articleRepository.findById(id);
 
         if (optional.isPresent()) {
             optional.get().IncPageView();
             articleRepository.save(optional.get());
+        } else {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Article Not Found");
         }
 
-        return optional.orElseGet(Article::new);
+        var article = optional.get();
+
+        return new ArticleGetDto(article);
     }
 
     @GetMapping("")
-    public Page<Article> pageQuery(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        return articleRepository.findAll(PageRequest.of(pageNum - 1, pageSize));
+    public Page<ArticleGetDto> pageQuery(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+
+        return articleRepository.findAll(PageRequest.of(pageNum - 1, pageSize)).map(ArticleGetDto::new);
     }
 }

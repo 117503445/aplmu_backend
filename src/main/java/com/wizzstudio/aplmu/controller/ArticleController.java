@@ -64,10 +64,14 @@ public class ArticleController {
         return new ArticleGetDto(article);
     }
 
-    @GetMapping("")
+    @GetMapping()
     public Page<ArticleGetDto> pageQuery(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-
-        return articleRepository.findAll(PageRequest.of(pageNum - 1, pageSize)).map(ArticleGetDto::new);
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                         @RequestParam(value = "authorId", required = false) Integer authorId) {
+        if (authorId == null) {
+            return articleRepository.findAll(PageRequest.of(pageNum - 1, pageSize)).map(ArticleGetDto::new);
+        } else {
+            return articleRepository.findAllByAuthorID(PageRequest.of(pageNum - 1, pageSize), authorId).map(ArticleGetDto::new);
+        }
     }
 }

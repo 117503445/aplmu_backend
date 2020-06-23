@@ -2,6 +2,8 @@ package com.wizzstudio.aplmu.util;
 
 import com.wizzstudio.aplmu.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -25,11 +27,33 @@ public class SecurityUtil {
     }
 
     public static String FromIdGetUserName(long id) {
-
         var oUser = userRepository.findById(id);
         if (oUser.isEmpty()) {
             return "已注销";
         }
         return oUser.get().getUsername();
+    }
+
+    public static Authentication getCurrentAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public static Optional<String> getCurrentUserName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(authentication.getName());
+    }
+
+    public static Optional<Long> getCurrentUserId() {
+
+        var oName = getCurrentUserName();
+        if (oName.isEmpty()) {
+            return Optional.empty();
+        }
+        String name = oName.get();
+        return FromUserNameGetId(name);
     }
 }

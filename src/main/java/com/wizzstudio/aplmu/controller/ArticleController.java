@@ -4,14 +4,12 @@ import com.wizzstudio.aplmu.dto.ArticleGetDto;
 import com.wizzstudio.aplmu.entity.Article;
 import com.wizzstudio.aplmu.error.CustomException;
 import com.wizzstudio.aplmu.repository.ArticleRepository;
-import com.wizzstudio.aplmu.security.repository.UserRepository;
+import com.wizzstudio.aplmu.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,26 +19,17 @@ import java.util.Optional;
 @RequestMapping("/api/article")
 public class ArticleController {
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
 
-    public ArticleController(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleController(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
     }
 
     @Secured("ROLE_USER")
     @PostMapping()
     public Article save(@RequestBody Article article) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        assert authentication != null;
-
-        var oJwtUser = userRepository.findOneByUsername(authentication.getName());
-        assert oJwtUser.isPresent();
-
-        var jwtUser = oJwtUser.get();
-
-        article.setAuthorID(jwtUser.getId());
-
+        var oUserId = SecurityUtil.getCurrentUserId();
+        assert oUserId.isPresent();
+        article.setAuthorID(oUserId.get());
         return articleRepository.save(article);
     }
 

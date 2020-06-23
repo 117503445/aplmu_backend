@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 @Table(name = "USER")
 public class User {
-    //todo 增加头像url
     @JsonIgnore
     @Id
     @Column(name = "ID")

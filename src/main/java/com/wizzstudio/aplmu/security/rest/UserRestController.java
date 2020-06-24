@@ -26,9 +26,9 @@ public class UserRestController {
         this.userRepository = userRepository;
     }
 
-    @ApiOperation("根据 id 查看信息 ROLE_ADMIN")
+    @ApiOperation("根据 id 查看信息 ROLE_USER")
     @GetMapping("/{id}")
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_USER")
     public Optional<User> getOne(@PathVariable("id") long id) {
         return userRepository.findById(id);
     }

@@ -11,12 +11,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Aspect
 @Component
 public class WebLogAspect {
-
+    //todo 改善日志系统
     private final static Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
 
     /**

@@ -29,6 +29,7 @@ public class ArticleController {
     @Secured("ROLE_USER")
     @PostMapping()
     public Article save(@RequestBody Article article) {
+        //todo 改变签名
         var oUserId = SecurityUtil.getCurrentUserId();
         assert oUserId.isPresent();
         article.setAuthorID(oUserId.get());

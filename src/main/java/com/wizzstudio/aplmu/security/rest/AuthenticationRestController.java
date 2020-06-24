@@ -9,6 +9,7 @@ import com.wizzstudio.aplmu.security.model.User;
 import com.wizzstudio.aplmu.security.repository.UserRepository;
 import com.wizzstudio.aplmu.security.rest.dto.LoginDto;
 import com.wizzstudio.aplmu.security.rest.dto.RegisterDto;
+import com.wizzstudio.aplmu.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpHeaders;
@@ -64,7 +65,10 @@ public class AuthenticationRestController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+        var oUserId = SecurityUtil.getCurrentUserId();
+        assert oUserId.isPresent();
+
+        return new ResponseEntity<>(new JWTToken(jwt, oUserId.get()), httpHeaders, HttpStatus.OK);
     }
 
     @ApiOperation(value = "注册")
@@ -112,10 +116,13 @@ public class AuthenticationRestController {
     static class JWTToken {
 
         private String idToken;
+        private long userId;
 
-        JWTToken(String idToken) {
+        public JWTToken(String idToken, long userId) {
             this.idToken = idToken;
+            this.userId = userId;
         }
+
 
         @JsonProperty("id_token")
         String getIdToken() {
@@ -124,6 +131,14 @@ public class AuthenticationRestController {
 
         void setIdToken(String idToken) {
             this.idToken = idToken;
+        }
+
+        public long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(long userId) {
+            this.userId = userId;
         }
     }
 }

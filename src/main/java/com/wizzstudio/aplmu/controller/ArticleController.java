@@ -37,15 +37,33 @@ public class ArticleController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") int id) {
-        //todo 只有管理员和编辑者可以进行删除
+    public void delete(@PathVariable("id") int id) throws CustomException {
+        authorOrAdmin(id);
 
         articleRepository.deleteById(id);
     }
 
+    //只有当前用户为作者或者管理员,才不抛出异常
+    private void authorOrAdmin(int id) throws CustomException {
+        var oArticle = articleRepository.findById(id);
+        if (oArticle.isEmpty()) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "未找到文章");
+        }
+
+        var oCurrentUserId = SecurityUtil.getCurrentUserId();
+        assert oCurrentUserId.isPresent();
+
+        if (!SecurityUtil.isAdmin() && oCurrentUserId.get() != oArticle.get().getAuthorID()) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "无法编辑他人的文章,除非你有管理员权限");
+        }
+    }
+
+    @ApiOperation("更新某个文章 ROLE_USER")
+    @Secured("ROLE_USER")
     @PutMapping("/{id}")
-    public Article update(@PathVariable("id") int id, @RequestBody Article article) {
-        //todo 只有管理员和编辑者可以进行更新
+    public Article update(@PathVariable("id") int id, @RequestBody Article article) throws CustomException {
+        authorOrAdmin(id);
+
         article.setId(id);
         return articleRepository.save(article);
     }

@@ -6,6 +6,7 @@ import com.wizzstudio.aplmu.error.CustomException;
 import com.wizzstudio.aplmu.repository.ArticleRepository;
 import com.wizzstudio.aplmu.util.SecurityUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class ArticleController {
         this.articleRepository = articleRepository;
     }
 
+    @ApiOperation("提交文章 ROLE_USER")
     @Secured("ROLE_USER")
     @PostMapping()
     public Article save(@RequestBody Article article) {

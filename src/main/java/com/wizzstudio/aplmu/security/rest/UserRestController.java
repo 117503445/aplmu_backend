@@ -26,14 +26,14 @@ public class UserRestController {
         this.userRepository = userRepository;
     }
 
-    @ApiOperation("根据 id 查看信息")
+    @ApiOperation("根据 id 查看信息 ROLE_ADMIN")
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
     public Optional<User> getOne(@PathVariable("id") long id) {
         return userRepository.findById(id);
     }
 
-    @ApiOperation("查看自己的信息")
+    @ApiOperation("查看自己的信息 ROLE_USER")
     @GetMapping("/me")
     @Secured("ROLE_USER")
     public Optional<User> getMe() {
@@ -43,16 +43,16 @@ public class UserRestController {
         return userRepository.findById(oUserId.get());
     }
 
-    @ApiOperation("查看所有用户信息")
+    @ApiOperation("查看所有用户信息 ROLE_ADMIN")
     @GetMapping()
-    @Secured("ROLE_USER")
+    @Secured("ROLE_ADMIN")
     public Page<User> pageQuery(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
 
         return userRepository.findAll(PageRequest.of(pageNum - 1, pageSize));
     }
 
-    @ApiOperation("删除某个非管理员用户")
+    @ApiOperation("删除某个非管理员用户 ROLE_ADMIN")
     @DeleteMapping("/{id}")
     @Secured("ROLE_ADMIN")
     public void delete(@PathVariable("id") long id) throws CustomException {
@@ -63,7 +63,7 @@ public class UserRestController {
         userRepository.deleteById(id);
     }
 
-    @ApiOperation("更新某个用户信息")
+    @ApiOperation("更新某个用户信息 ROLE_USER")
     @PutMapping("/{id}")
     @Secured("ROLE_USER")
     public User update(@PathVariable("id") long id, @RequestBody RegisterDto registerDto) throws CustomException {

@@ -1,7 +1,7 @@
 package com.wizzstudio.aplmu.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.Tag;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +24,7 @@ public class ProjectInfoController {
     @Value("${app.build.time}")
     private String buildTime;
 
+    @ApiOperation("获取后端版本 ROLE_ADMIN")
     @Secured("ROLE_ADMIN")
     @GetMapping(path = "ver", produces = "application/json")
     public @ResponseBody

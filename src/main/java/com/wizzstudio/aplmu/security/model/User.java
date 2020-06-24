@@ -1,6 +1,7 @@
 package com.wizzstudio.aplmu.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "USER")
 public class User {
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "USER_SEQ")

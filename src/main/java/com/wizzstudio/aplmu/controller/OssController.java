@@ -63,12 +63,11 @@ public class OssController {
         if (article.isEmpty()) {
             throw new CustomException(HttpStatus.NOT_FOUND, "文章不存在");
         }
-        //todo 管理员也可以进行修改
 
         var oCurrentId = SecurityUtil.getCurrentUserId();
         assert oCurrentId.isPresent();
 
-        if (article.get().getAuthorID() == oCurrentId.get()) {
+        if (!SecurityUtil.isAdmin() && article.get().getAuthorID() != oCurrentId.get()) {
             throw new CustomException(HttpStatus.UNAUTHORIZED, "不可以编辑他人的文章");
         }
 

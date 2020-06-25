@@ -1,6 +1,7 @@
 package com.wizzstudio.aplmu.security.rest.dto;
 
 import com.wizzstudio.aplmu.security.model.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -64,10 +65,26 @@ public class RegisterDto {
     }
 
     public static void toUser(RegisterDto dto, User user) {
-        user.setAvatar(dto.getAvatar());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        user.setLastname(dto.getLastname());
-        user.setUsername(dto.getUsername());
+        if (dto.getAvatar() != null) {
+            user.setAvatar(dto.getAvatar());
+        }
+
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+
+        if (dto.getPassword() != null) {
+            user.setPassword(new
+                    BCryptPasswordEncoder().
+                    encode(dto.getPassword()));
+        }
+
+        if (dto.getLastname() != null) {
+            user.setLastname(dto.getLastname());
+        }
+
+        if (dto.getUsername() != null) {
+            user.setUsername(dto.getUsername());
+        }
     }
 }

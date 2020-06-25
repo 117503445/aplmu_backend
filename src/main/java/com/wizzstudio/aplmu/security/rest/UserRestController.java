@@ -67,6 +67,7 @@ public class UserRestController {
     @PutMapping("/{id}")
     @Secured("ROLE_USER")
     public User update(@PathVariable("id") long id, @RequestBody RegisterDto registerDto) throws CustomException {
+
         var oCurrentUserId = SecurityUtil.getCurrentUserId();
         assert oCurrentUserId.isPresent();
 

@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Article {
+public class ArticleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

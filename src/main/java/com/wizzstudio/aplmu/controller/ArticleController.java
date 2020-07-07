@@ -1,7 +1,7 @@
 package com.wizzstudio.aplmu.controller;
 
 import com.wizzstudio.aplmu.dto.ArticleGetDto;
-import com.wizzstudio.aplmu.entity.Article;
+import com.wizzstudio.aplmu.entity.ArticleEntity;
 import com.wizzstudio.aplmu.error.CustomException;
 import com.wizzstudio.aplmu.repository.ArticleRepository;
 import com.wizzstudio.aplmu.util.SecurityUtil;
@@ -28,12 +28,12 @@ public class ArticleController {
     @ApiOperation("提交文章 ROLE_USER")
     @Secured("ROLE_USER")
     @PostMapping()
-    public Article save(@RequestBody Article article) {
+    public ArticleEntity save(@RequestBody ArticleEntity articleEntity) {
         //todo 改变签名
         var oUserId = SecurityUtil.getCurrentUserId();
         assert oUserId.isPresent();
-        article.setAuthorID(oUserId.get());
-        return articleRepository.save(article);
+        articleEntity.setAuthorID(oUserId.get());
+        return articleRepository.save(articleEntity);
     }
 
     @DeleteMapping("/{id}")
@@ -61,17 +61,17 @@ public class ArticleController {
     @ApiOperation("更新某个文章 ROLE_USER")
     @Secured("ROLE_USER")
     @PutMapping("/{id}")
-    public Article update(@PathVariable("id") int id, @RequestBody Article article) throws CustomException {
+    public ArticleEntity update(@PathVariable("id") int id, @RequestBody ArticleEntity articleEntity) throws CustomException {
         authorOrAdmin(id);
 
-        article.setId(id);
-        return articleRepository.save(article);
+        articleEntity.setId(id);
+        return articleRepository.save(articleEntity);
     }
 
     @GetMapping("/{id}")
     public ArticleGetDto get(@PathVariable("id") int id) throws CustomException {
 
-        Optional<Article> optional = articleRepository.findById(id);
+        Optional<ArticleEntity> optional = articleRepository.findById(id);
 
         if (optional.isPresent()) {
             optional.get().IncPageView();

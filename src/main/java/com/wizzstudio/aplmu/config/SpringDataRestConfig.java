@@ -1,6 +1,6 @@
 package com.wizzstudio.aplmu.config;
 
-import com.wizzstudio.aplmu.entity.Article;
+import com.wizzstudio.aplmu.entity.ArticleEntity;
 import com.wizzstudio.aplmu.security.model.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ public class SpringDataRestConfig {
         return new RepositoryRestConfigurer() {
             @Override
             public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-                config.exposeIdsFor(Article.class, User.class);
+                config.exposeIdsFor(ArticleEntity.class, User.class);
             }
         };
     }

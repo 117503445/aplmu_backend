@@ -17,7 +17,7 @@ def init(mode: str):
     config.url_register = config.url_api+'/register'
     config.user = config.url_api+'/user'
     config.user_me = config.url_api+'/user/me'
-    config.article = config.url_api+'/article'
+    config.articleEntity = config.url_api+'/articleEntity'
 
 
 def login(username, password):
@@ -79,7 +79,7 @@ def post_article(jwt, title, titleImage, content):
         'ct', content).replace('tt', title).replace('tm', titleImage).encode('utf-8')
 
     response = requests.post(
-        config.article, headers=headers, data=data)
+        config.articleEntity, headers=headers, data=data)
     print(response.text)
 
 

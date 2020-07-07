@@ -17,8 +17,8 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "USER_SEQ")
-    @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     @Column(name = "USERNAME", length = 50, unique = true)

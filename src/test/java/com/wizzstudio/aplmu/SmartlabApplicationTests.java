@@ -10,7 +10,6 @@ class AplmuApplicationTests {
 
     @Test
     void contextLoads() {
-        //todo 增加测试
         System.out.println("Test : contextLoads ");
     }
 

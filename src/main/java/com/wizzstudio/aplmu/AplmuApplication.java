@@ -3,9 +3,9 @@ package com.wizzstudio.aplmu;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@EnableSwagger2WebMvc
+@EnableSwagger2
 @SpringBootApplication
 @EnableJpaAuditing
 public class AplmuApplication {

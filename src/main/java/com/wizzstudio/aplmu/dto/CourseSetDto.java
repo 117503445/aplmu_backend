@@ -4,8 +4,6 @@ import com.wizzstudio.aplmu.entity.CourseEntity;
 
 public class CourseSetDto {
     private String name;//课程名
-    private String createTime;
-    private String summary;
     private String imageUrl;
     private String videoUrl;
     private double price;
@@ -16,8 +14,6 @@ public class CourseSetDto {
     public CourseEntity toEntity() {
         CourseEntity courseEntity = new CourseEntity();
         courseEntity.setName(name);
-        courseEntity.setCreateTime(createTime);
-        courseEntity.setSummary(summary);
         courseEntity.setImageUrl(imageUrl);
         courseEntity.setVideoUrl(videoUrl);
         courseEntity.setPrice(price);
@@ -32,22 +28,6 @@ public class CourseSetDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public String getImageUrl() {

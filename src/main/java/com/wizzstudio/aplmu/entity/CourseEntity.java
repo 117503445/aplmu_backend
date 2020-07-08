@@ -14,8 +14,6 @@ public class CourseEntity {
     private long id;
 
     private String name;//课程名
-    private String createTime;
-    private String summary;
     private String imageUrl;
     private String videoUrl;
     private double price;
@@ -37,22 +35,6 @@ public class CourseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public String getImageUrl() {

@@ -8,10 +8,12 @@ import javax.persistence.*;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(name = "article")
 public class ArticleEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Column(name = "id", unique = true)
     private Integer id;
 
     private String title;

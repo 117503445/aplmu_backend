@@ -9,3 +9,7 @@ INSERT INTO user_authority (USER_ID, AUTHORITY_NAME) VALUES (1, 'ROLE_USER');
 INSERT INTO user_authority (USER_ID, AUTHORITY_NAME) VALUES (1, 'ROLE_ADMIN');
 INSERT INTO user_authority (USER_ID, AUTHORITY_NAME) VALUES (2, 'ROLE_USER');
 INSERT INTO user_authority (USER_ID, AUTHORITY_NAME) VALUES (3, 'ROLE_USER');
+
+INSERT INTO `aplmu`.`article`(`id`,`authorid`,`content`,`created_time_stamp`,`page_view`,`title`,`title_image`)VALUES(1,1,"# Hello \n\n ## World",1594174524971,0,"你好1","https://qph.fs.quoracdn.net/main-qimg-584b2d27360ea867c70d14214767574c");
+INSERT INTO `aplmu`.`article`(`id`,`authorid`,`content`,`created_time_stamp`,`page_view`,`title`,`title_image`)VALUES(2,2,"# Hello \n\n ## World",1594174524971,0,"你好2","https://qph.fs.quoracdn.net/main-qimg-584b2d27360ea867c70d14214767574c");
+INSERT INTO `aplmu`.`article`(`id`,`authorid`,`content`,`created_time_stamp`,`page_view`,`title`,`title_image`)VALUES(3,2,"# Hello \n\n ## World",1594174524971,0,"你好3","https://qph.fs.quoracdn.net/main-qimg-584b2d27360ea867c70d14214767574c");
